@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yuktidea_flutter_deveoper_task/core/config/colors.dart';
@@ -28,28 +30,32 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: AppColors.Grey,
       body: Padding(
         padding: EdgeInsets.symmetric(
-            vertical: size.height * 0.13, horizontal: size.width * 0.1),
-        child: SizedBox(
-          height: size.height,
-          width: size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                  child: Column(
-                children: [
-                  Text(
-                    'Welcome Back',
-                    style: TextStyle(color: AppColors.White, fontSize: 26.sp),
-                  ),
-                  Text(
-                    "Please sign in to your account",
-                    style: TextStyle(color: AppColors.White, fontSize: 14.sp),
-                  ),
-                ],
-              )),
-              Expanded(
-                child: SizedBox(
+            vertical: size.height * 0.1, horizontal: size.width * 0.1),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          physics: BouncingScrollPhysics(),
+          child: SizedBox(
+            height: size.height * 0.85,
+            width: size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                    child: Column(
+                  children: [
+                    Text(
+                      'Welcome Back',
+                      style: TextStyle(color: AppColors.White, fontSize: 26.sp),
+                    ),
+                    Text(
+                      "Please sign in to your account",
+                      style: TextStyle(color: AppColors.White, fontSize: 14.sp),
+                    ),
+                  ],
+                )),
+                SizedBox(
+                  height: size.height * 0.5,
+                  width: size.width,
                   child: Form(
                     key: formKey,
                     autovalidateMode: autovalidateMode,
@@ -74,8 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: usernameController,
                             decoration: InputDecoration(
                                 focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey.shade100)),
+                                    borderSide:
+                                        BorderSide(color: Colors.black)),
                                 labelText: "Username",
                                 enabledBorder: InputBorder.none,
                                 labelStyle: GoogleFonts.montserrat(
@@ -99,7 +105,8 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: isPassVisible ? true : false,
                             controller: passwordController,
                             decoration: InputDecoration(
-                              focusedBorder: InputBorder.none,
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black)),
                               labelText: "Password",
                               enabledBorder: InputBorder.none,
                               labelStyle: GoogleFonts.montserrat(
@@ -136,9 +143,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                child: Column(
+                SizedBox(
+                    child: Column(
                   children: [
                     CustomButton(size: size, onpress: () {}, text: "Login"),
                     Row(
@@ -151,19 +157,18 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 14.sp),
                         ),
                         TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'SignUp',
-                            style: TextStyle(
-                                color: AppColors.Red, fontSize: 14.sp),
-                          ),
-                        )
+                            onPressed: () {},
+                            child: Text(
+                              'SignUp',
+                              style: TextStyle(
+                                  color: AppColors.Red, fontSize: 14.sp),
+                            ))
                       ],
                     ),
                   ],
-                ),
-              ),
-            ],
+                )),
+              ],
+            ),
           ),
         ),
       ),
