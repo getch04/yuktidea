@@ -5,6 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yuktidea_flutter_deveoper_task/core/config/colors.dart';
 import 'package:yuktidea_flutter_deveoper_task/features/auth/presentation/widgets/custom_button.dart';
+import 'package:yuktidea_flutter_deveoper_task/features/auth/presentation/widgets/custom_header_widget.dart';
+import 'package:yuktidea_flutter_deveoper_task/features/auth/presentation/widgets/custom_input_field.dart';
+import 'package:yuktidea_flutter_deveoper_task/features/auth/presentation/widgets/custom_password_text_form_widget.dart';
+import 'package:yuktidea_flutter_deveoper_task/route.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,19 +44,9 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                    child: Column(
-                  children: [
-                    Text(
-                      'Welcome Back',
-                      style: TextStyle(color: AppColors.White, fontSize: 26.sp),
-                    ),
-                    Text(
-                      "Please sign in to your account",
-                      style: TextStyle(color: AppColors.White, fontSize: 14.sp),
-                    ),
-                  ],
-                )),
+                CustomHeaderWidget(
+                    title: "Welcome Back",
+                    subtitle: "Please sign in to your account"),
                 SizedBox(
                   height: size.height * 0.5,
                   width: size.width,
@@ -63,71 +57,21 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          padding: EdgeInsets.only(left: 15.w),
-                          margin: EdgeInsets.only(bottom: size.height * 0.02),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: AppColors.Black,
-                          ),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please enter your username';
-                              }
-                              return null;
-                            },
-                            controller: usernameController,
-                            decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.black)),
-                                labelText: "Username",
-                                enabledBorder: InputBorder.none,
-                                labelStyle: GoogleFonts.montserrat(
-                                  color: AppColors.White.withOpacity(0.5),
-                                )),
-                          ),
+                        CustomTextFormField(
+                          size: size,
+                          controller: usernameController,
+                          labelText: "username",
                         ),
-                        Container(
-                          padding: EdgeInsets.only(left: 15.w),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: AppColors.Black,
-                          ),
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please enter your password';
-                              }
-                              return null;
-                            },
-                            obscureText: isPassVisible ? true : false,
+                        CustomPasswordTextForm(
+                            size: size,
                             controller: passwordController,
-                            decoration: InputDecoration(
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              labelText: "Password",
-                              enabledBorder: InputBorder.none,
-                              labelStyle: GoogleFonts.montserrat(
-                                color: AppColors.White.withOpacity(0.5),
-                              ),
-                              suffixIcon: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isPassVisible = !isPassVisible;
-                                  });
-                                },
-                                child: Icon(
-                                  isPassVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: AppColors.White.withOpacity(0.5),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                            labelText: "Password",
+                            onpress: () {
+                              setState(() {
+                                isPassVisible = !isPassVisible;
+                              });
+                            },
+                            isVisible: isPassVisible),
                         TextButton(
                           onPressed: () {},
                           child: Text(
@@ -157,7 +101,9 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 14.sp),
                         ),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, Paths.register);
+                            },
                             child: Text(
                               'SignUp',
                               style: TextStyle(
