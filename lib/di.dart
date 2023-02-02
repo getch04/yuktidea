@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:yuktidea_flutter_deveoper_task/core/network/network_info.dart';
 import 'package:yuktidea_flutter_deveoper_task/core/utils/shared_preference.dart';
+import 'package:yuktidea_flutter_deveoper_task/features/auth/data/datasources/auth_data_source.dart';
+import 'package:yuktidea_flutter_deveoper_task/features/auth/data/repositories/auth_repository.dart';
 import 'package:yuktidea_flutter_deveoper_task/features/auth/presentation/bloc/auth_bloc.dart';
 
 final sl = GetIt.instance;
@@ -21,7 +23,7 @@ Future<void> init() async {
   //! Features - Number Trivia
 //Bloc
   // sl.registerFactory(() => LocaleCubit());
-  sl.registerFactory(() => AuthBloc());
+  sl.registerFactory(() => AuthBloc(sl()));
 
 //THEME bloc
   // sl.registerFactory(() => ThemeCubit());
@@ -35,16 +37,16 @@ Future<void> init() async {
   // Use cases
 
 // Repository
-  // sl.registerLazySingleton<LoginRepository>(
-  //   () => LoginRepository(
-  //     remoteDataSource: sl(),
-  //     networkInfo: sl(),
-  //   ),
-  // );
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepository(
+      remoteDataSource: sl(),
+      networkInfo: sl(),
+    ),
+  );
   // Data sources
-  // sl.registerLazySingleton<LoginRemoteDataSource>(
-  //   () => LoginRemoteDataSourceImpl(client: sl()),
-  // );
+  sl.registerLazySingleton<AuthDataSource>(
+    () => AuthDataSourceImpl(client: sl()),
+  );
 
 //! Core
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));

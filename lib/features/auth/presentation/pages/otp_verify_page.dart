@@ -108,7 +108,10 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     onpress: () {
                       Navigator.pushNamed(context, Paths.home);
                     },
-                    text: "Verify"),
+                    text: Text(
+                                    "Verify",
+                                    style: TextStyle(fontSize: 17.sp),
+                                  ))
               ],
             ),
           ),

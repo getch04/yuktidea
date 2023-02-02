@@ -11,8 +11,8 @@ class CustomButton extends StatelessWidget {
   });
 
   final Size size;
-  final String text;
-  final VoidCallback onpress;
+  final Widget text;
+  final VoidCallback? onpress;
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +20,14 @@ class CustomButton extends StatelessWidget {
       width: size.width * 0.6,
       height: size.height * 0.06,
       child: ElevatedButton(
-        onPressed: onpress,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.Red,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // <-- Radius
+          onPressed: onpress,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.Red,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12), // <-- Radius
+            ),
           ),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 17.sp),
-        ),
-      ),
+          child: text),
     );
   }
 }

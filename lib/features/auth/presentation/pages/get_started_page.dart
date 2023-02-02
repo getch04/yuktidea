@@ -61,7 +61,10 @@ class GetStartedPage extends StatelessWidget {
                     ),
                     CustomButton(
                         size: size,
-                        text: "Get Started",
+                        text: Text(
+                          "Get Started",
+                          style: TextStyle(fontSize: 17.sp),
+                        ),
                         onpress: () {
                           Navigator.pushNamed(context, Paths.login);
                         }),

@@ -49,10 +49,10 @@ class AuthApp extends StatelessWidget {
             navigatorKey: AppNavigator.navigatorKey,
             initialRoute: Paths.splash,
             theme: ThemeData(
-              // fontFamily: GoogleFonts.montserrat(
-              // ),
-          
-            ),
+                // fontFamily: GoogleFonts.montserrat(
+                // ),
+
+                ),
             onGenerateRoute: AppNavigator.onGenerateRoute,
             builder: (context, child) {
               if (child == null) return const SizedBox.shrink();

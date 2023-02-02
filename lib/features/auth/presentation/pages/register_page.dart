@@ -103,7 +103,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             onpress: () {
                               Navigator.pushNamed(context, Paths.otp);
                             },
-                            text: "Sign Up"),
+                            text: Text(
+                                    " Sign Up",
+                                    style: TextStyle(fontSize: 17.sp),
+                                  )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
