@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:logger/logger.dart';
+import 'package:yuktidea_flutter_deveoper_task/core/common/models/success_model.dart';
 import 'package:yuktidea_flutter_deveoper_task/features/auth/data/datasources/auth_data_source.dart';
 
 import '../../../../core/errors/exceptions.dart';
@@ -41,6 +42,38 @@ class AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         final response = await remoteDataSource.register(registerModel);
+        Logger().d(response);
+        return Right(response);
+      } on ServerException {
+        return const Left('something went wrong!');
+      } catch (e) {
+        Logger().d(e.toString());
+        return Left(e.toString());
+      }
+    }
+    return left('No internet Connection');
+  }
+
+  Future<Either<String, dynamic>> otpSend() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await remoteDataSource.otpSend();
+        Logger().d(response);
+        return Right(response);
+      } on ServerException {
+        return const Left('something went wrong!');
+      } catch (e) {
+        Logger().d(e.toString());
+        return Left(e.toString());
+      }
+    }
+    return left('No internet Connection');
+  }
+
+  Future<Either<String, dynamic>> logout() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await remoteDataSource.logout();
         Logger().d(response);
         return Right(response);
       } on ServerException {

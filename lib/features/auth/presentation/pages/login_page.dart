@@ -31,55 +31,54 @@ class _LoginPageState extends State<LoginPage> {
     var size = MediaQuery.of(context).size;
     final authBloc = BlocProvider.of<AuthBloc>(context);
     return BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is LoginFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.info_outline_rounded,
-                        color: AppColors.Black,
-                      ),
+      listener: (context, state) {
+        if (state is LoginFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.info_outline_rounded,
+                      color: AppColors.Black,
                     ),
-                    Expanded(
-                        child: Text(
-                      state.msg,
-                      style: TextStyle(
-                        color: AppColors.White,
-                      ),
-                    )),
-                  ],
-                ),
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: AppColors.Red,
-                duration: const Duration(seconds: 5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
+                  ),
+                  Expanded(
+                      child: Text(
+                    state.msg,
+                    style: TextStyle(
+                      color: AppColors.White,
+                    ),
+                  )),
+                ],
               ),
-            );
-          }
-          if (state is LoginSuccess) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, Paths.home, (route) => false);
-          }
-        },
-        child: Scaffold(
-          backgroundColor: AppColors.Grey,
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: size.height * 0.1, horizontal: size.width * 0.1),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              physics: const BouncingScrollPhysics(),
-              child: SizedBox(
-                height: size.height * 0.85,
-                width: size.width,
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: AppColors.Red,
+              duration: const Duration(seconds: 5),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          );
+        }
+        if (state is LoginSuccess) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, Paths.home, (route) => false);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.Grey,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: size.height,
+              width: size.width,
+              child: Padding(
+                padding: EdgeInsets.only(top: size.height * 0.05),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     const CustomHeaderWidget(
                         title: "Welcome Back",
@@ -136,7 +135,8 @@ class _LoginPageState extends State<LoginPage> {
                                     : () {
                                         if (formKey.currentState!.validate()) {
                                           authBloc.add(LoginEvent({
-                                            "login": usernameController.text,
+                                            "login":
+                                                usernameController.text.trim(),
                                             "password": passwordController.text
                                           }));
                                         } else {
@@ -181,6 +181,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

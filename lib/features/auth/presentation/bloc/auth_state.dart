@@ -32,9 +32,20 @@ class RegisterFailure extends AuthState {
 //OTP states
 class OtpLoading extends AuthState {}
 
-class OtpSuccess extends AuthState {}
+class OtpSuccess extends AuthState {
+  final String code;
+
+  const OtpSuccess({required this.code});
+}
 
 class OtpFailure extends AuthState {
   final String msg;
   const OtpFailure(this.msg);
 }
+
+//Logout states
+class LogoutLoading extends AuthState {}
+
+class LogoutSuccess extends AuthState {}
+
+class LogoutFailure extends AuthState {}

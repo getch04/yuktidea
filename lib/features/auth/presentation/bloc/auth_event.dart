@@ -19,8 +19,6 @@ class RegisterEvent extends AuthEvent {
   const RegisterEvent(this.registerModel);
 }
 
-class OtpEvent extends AuthEvent {
-  final Map<String, dynamic> phone;
+class OtpEvent extends AuthEvent {}
 
-  const OtpEvent(this.phone);
-}
+class LogoutEvent extends AuthEvent {}

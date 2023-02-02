@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logger/logger.dart';
 import 'package:yuktidea_flutter_deveoper_task/core/config/constants.dart';
+import 'package:yuktidea_flutter_deveoper_task/core/utils/shared_preference.dart';
 import 'package:yuktidea_flutter_deveoper_task/di.dart' as di;
 import 'package:yuktidea_flutter_deveoper_task/di.dart';
 import 'package:yuktidea_flutter_deveoper_task/route.dart';
@@ -37,6 +39,7 @@ class AuthApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger().d(Storage.getString(AppConstants.tokenkey));
     return ScreenUtilInit(
         designSize: const Size(360, 690),
         minTextAdapt: true,
@@ -47,7 +50,9 @@ class AuthApp extends StatelessWidget {
             color: Colors.white,
             title: 'Auth App',
             navigatorKey: AppNavigator.navigatorKey,
-            initialRoute: Paths.splash,
+            initialRoute: Storage.getString(AppConstants.tokenkey) == ""
+                ? Paths.splash
+                : Paths.home,
             theme: ThemeData(
                 // fontFamily: GoogleFonts.montserrat(
                 // ),

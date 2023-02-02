@@ -45,6 +45,8 @@ dependencies:
   pin_code_fields: ^7.4.0
   logger: ^1.1.0
   dartz: ^0.10.1
+  http_interceptor: ^1.0.2
+  http_retry: ^0.2.0
 
 dev_dependencies:
   flutter_test:
