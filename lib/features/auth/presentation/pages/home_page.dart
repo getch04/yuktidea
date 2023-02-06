@@ -53,12 +53,12 @@ class _HomePageState extends State<HomePage> {
               ),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  if (state is LoginFailure) {
+                  if (state is LogoutFailure) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Row(
-                          children: [
-                            const Padding(
+                          children: const [
+                            Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Icon(
                                 Icons.info_outline_rounded,
@@ -67,8 +67,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Expanded(
                                 child: Text(
-                              state.msg,
-                              style: const TextStyle(
+                              "Logout failed",
+                              style: TextStyle(
                                 color: AppColors.White,
                               ),
                             )),
@@ -83,7 +83,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   }
-                  if (state is LoginSuccess) {
+                  if (state is LogoutSuccess) {
+                    
                     Navigator.pushNamedAndRemoveUntil(
                         context, Paths.login, (route) => false);
                   }

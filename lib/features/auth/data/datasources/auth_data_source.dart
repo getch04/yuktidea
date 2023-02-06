@@ -2,10 +2,13 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+import 'package:yuktidea_flutter_deveoper_task/core/common/models/success_model.dart';
 import 'package:yuktidea_flutter_deveoper_task/core/utils/shared_preference.dart';
 import 'package:yuktidea_flutter_deveoper_task/features/auth/domain/models/register_model.dart';
+import 'package:yuktidea_flutter_deveoper_task/route.dart';
 
 import '../../../../core/common/api/CustomException.dart';
 import '../../../../core/common/api/ResponseStatus.dart';
@@ -47,7 +50,7 @@ class AuthDataSourceImpl implements AuthDataSource {
           body: jsonEncode(loginModel),
           headers: {'Content-Type': 'application/json'});
       Logger().d(response.body);
-      responseJson = ResponseStatus(response);
+      responseJson = ResponseStatus(client, login, response);
       Logger().d(responseJson);
     } on SocketException {
       throw FetchDataException(
@@ -66,7 +69,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         body: registerModel.toJson(),
       );
       Logger().d(response.body);
-      responseJson = ResponseStatus(response);
+      responseJson = ResponseStatus(client, register, response);
       Logger().d(responseJson);
     } on SocketException {
       throw FetchDataException(
@@ -88,7 +91,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         "Authorization": "Bearer $TOKEN"
       });
       Logger().d(response.body);
-      responseJson = ResponseStatus(response);
+      responseJson = ResponseStatus(client, otpSend, response);
       Logger().d(responseJson);
     } on SocketException {
       throw FetchDataException(
@@ -110,7 +113,38 @@ class AuthDataSourceImpl implements AuthDataSource {
         "Authorization": "Bearer $TOKEN"
       });
       Logger().d(response.body);
-      responseJson = ResponseStatus(response);
+      if (response.statusCode == 401) {
+        var response_ = await client.get(
+          Uri.parse('${AppConstants.baseUrl}refresh'),
+          headers: {
+            HttpHeaders.acceptHeader: "application/json",
+            HttpHeaders.authorizationHeader:
+                'Bearer ${Storage.getString(AppConstants.tokenkey)}'
+          },
+        );
+        Logger().d(response_.statusCode);
+        if (response_.statusCode == 200) {
+          Logger().d(response.body.toString());
+          Storage.setString(
+              AppConstants.tokenkey,
+              SuccessModel.fromJson(json.decode(response.body))
+                  .data[0]
+                  .accessToken);
+          logout();
+        } else if (response_.statusCode == 200) {
+          return json.decode(response_.body);
+        } else {
+          Logger().d(response.body.toString());
+          // refresh token is wrong so log out user.
+          // accessToken = null;
+          Storage.prefsInstance!.clear();
+          Navigator.pushNamedAndRemoveUntil(
+              AppNavigator.navigatorKey.currentContext!,
+              Paths.login,
+              (route) => false);
+          // _storage.deleteAll();
+        }
+      }
       Logger().d(responseJson);
     } on SocketException {
       throw FetchDataException(
@@ -120,25 +154,25 @@ class AuthDataSourceImpl implements AuthDataSource {
     return responseJson;
   }
 
-  Future<Map<String, dynamic>> refreshToken() async {
-    var responseJson;
+  // Future<Map<String, dynamic>> refreshToken() async {
+  //   var responseJson;
 
-    String TOKEN = Storage.getString(AppConstants.tokenkey);
-    Logger().d(TOKEN);
-    try {
-      final response = await client
-          .post(Uri.parse('${AppConstants.baseUrl}refresh'), headers: {
-        "Accept": "application/json",
-        "Authorization": "Bearer $TOKEN"
-      });
-      Logger().d(response.body);
-      responseJson = ResponseStatus(response);
-      Logger().d(responseJson);
-    } on SocketException {
-      throw FetchDataException(
-        message: 'No Internet connection, Please try again',
-      );
-    }
-    return responseJson;
-  }
+  //   String TOKEN = Storage.getString(AppConstants.tokenkey);
+  //   Logger().d(TOKEN);
+  //   try {
+  //     final response = await client
+  //         .post(Uri.parse('${AppConstants.baseUrl}refresh'), headers: {
+  //       "Accept": "application/json",
+  //       "Authorization": "Bearer $TOKEN"
+  //     });
+  //     Logger().d(response.body);
+  //     responseJson = ResponseStatus(response);
+  //     Logger().d(responseJson);
+  //   } on SocketException {
+  //     throw FetchDataException(
+  //       message: 'No Internet connection, Please try again',
+  //     );
+  //   }
+  //   return responseJson;
+  // }
 }

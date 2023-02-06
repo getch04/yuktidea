@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:yuktidea_flutter_deveoper_task/core/common/models/success_model.dart';
 import 'package:yuktidea_flutter_deveoper_task/core/config/constants.dart';
@@ -40,7 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(RegisterSuccess());
         });
       }
-      if (event is OtpEvent) {
+      if (event is OtpEvent ) {
         emit(OtpLoading());
         var res = await repository.otpSend();
         res.fold((l) => emit(OtpFailure(l)), (r) => emit(OtpSuccess(code: r)));
@@ -48,7 +49,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event is LogoutEvent) {
         emit(LogoutLoading());
         var res = await repository.logout();
-        res.fold((l) => emit(LogoutFailure()), (r) => emit(LogoutSuccess()));
+        res.fold((l) => emit(LogoutFailure()), (r) {
+          emit(LogoutSuccess());
+          Storage.prefsInstance!.clear();
+        });
       }
     });
   }

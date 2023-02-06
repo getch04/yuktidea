@@ -6,6 +6,4 @@ class AppConstants {
 
   //storage key
   static String tokenkey = 'TOKEN';
-  static String refreshTokenkey = 'REFRESHTOKEN';
-  static String userKey = 'USER';
 }
